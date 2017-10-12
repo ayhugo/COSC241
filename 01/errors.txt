@@ -1,0 +1,32 @@
+
+javac: file not found: Hi.java
+Usage: javac <options> <source files>
+use -help for a list of possible options
+Hi.java:3: error: unclosed string literal
+        System.out.println(Hello, World");
+                                       ^
+1 error
+Hi.java:3: error: unclosed string literal
+        System.out.println("Hello, World);
+                           ^
+Hi.java:3: error: ';' expected
+        System.out.println("Hello, World);
+                                          ^
+Hi.java:5: error: reached end of file while parsing
+}
+ ^
+3 errors
+Hi.java:3: error: cannot find symbol
+        System.out.printline("Hello, World");
+                  ^
+  symbol:   method printline(String)
+  location: variable out of type PrintStream
+1 error
+Hi.java:3: error: ';' expected
+        System.out.println("Hello, World")
+                                          ^
+1 error
+Hi.java:4: error: reached end of file while parsing
+    }
+     ^
+1 error

@@ -1,0 +1,31 @@
+package week01;
+import java.util.Scanner;
+public class Counter {
+    
+    public static void main(String[]args){
+        int lines = 0;
+        int words = 0;
+
+        Scanner reader = new Scanner(System.in);
+        
+
+        while(reader.hasNextLine()){
+            String line = reader.nextLine();
+            
+            Scanner input = new Scanner(line);
+
+            while (input.hasNext()){
+               
+                input.next();
+                words++;
+            }
+           lines++;
+        }
+        
+      
+
+        System.out.println("lines: "+ lines);
+        System.out.println("words: "+ words);
+
+    }
+}

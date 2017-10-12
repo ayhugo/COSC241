@@ -1,0 +1,147 @@
+package week09;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Main Class
+ * @author
+ */
+public class EP implements ExamPile {
+
+    private LinkedList<Integer> examPiles;
+
+    /** sets the current depth. */
+    private int depth = 1;
+	
+    /**
+     * Main Method
+     * @param args command line arguments are not used.
+     */
+    public static void main(String[] args) {
+        long startTime = System.nanoTime();
+        List<Integer> list = new ArrayList<Integer>();
+        list.addAll(Arrays.asList(8,7,6,2,1,0,5,9,3,4)); //answer = "DDDDDMDDDDDDDDMDDDDDDDMDDMMDDDMDDDMDDMDMM";
+        EP ep = new EP();
+        ep.setDepth(1);
+        ep.load(list);
+        System.out.println(ep.sortingSteps()); 
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime);
+        System.out.println("Time taken: " + (float)duration/1000000000);
+    }
+	
+    /**
+     * Initialize the pile of exams to consist of the contents of the list perovided.
+     * The example elements of the list represents the exams in order from top to bottom of the pile.
+     * The internal representation of the pile need not be as a list.
+     * @param
+     */
+    @Override
+    public void load(List<Integer> items) {
+        examPiles = new LinkedList<Integer>();
+        examPiles.addAll(items);
+    }
+
+    /**
+     * Returns a number of exams remaining in the pile.
+     * @return an int that is the number of exams remaining in the pile.
+     */
+    public int size() {
+        if (examPiles.isEmpty()) {
+            return 0;
+        } else {
+            return examPiles.size();
+        }
+    }
+	
+    /**
+     * Returns the value at the top of the pile.
+     * @return the value at the top of the pile.
+     */
+    @Override
+    public int peek() {
+        try {
+            return examPiles.getFirst();
+        } catch (EmptyPileException e) {
+            throw new EmptyPileException("The exam pile is an empty");
+        }
+    }
+	
+    /**
+     * Returns the given value from the top section of the pile, as specified by depth ,
+     * and removes it from the pile. Returns -1 if the value is not found.
+     * @param depth specifies how deep to look within the pile.
+     * @param value specifies which value to look for.
+     * @return the given value parameter if found in the pile.
+     */
+    @Override
+    public int mark(int depth, int value) {
+        try {
+            int currentNode = peek();
+            for (int index = 1; index <= depth; index++) {
+                if (currentNode == value) {
+                    examPiles.remove(index - 1);
+                    return value;
+                } else {
+                    currentNode = examPiles.get(index);
+                }
+            }
+            return -1;
+        } catch (EmptyPileException e) {
+            throw new EmptyPileException("The exam pile is an empty");
+        }
+    }
+	
+    /**
+     * Moves count values from the top of the pile to the bottom of the pile.
+     * @param count
+     */
+    @Override
+    public void delay(int count) {
+        try {
+            int examToBottom = 1;
+            while (examToBottom <= count) {
+                int temp = examPiles.getFirst();
+                examPiles.add(temp);
+                examPiles.remove(examPiles.getFirst());
+                examToBottom++;
+            }
+        } catch (EmptyPileException e) {
+            throw new EmptyPileException("The exam pile is an empty");
+        }
+    }
+	
+    /**
+     * Depth setter method.
+     * @param depth of the depth within the pile.
+     */
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+	
+    /**
+     * Every successful mark,an 'M' is added to a string, and every failed mark
+     * a 'D' is added to the string. The string is then printed and returned.
+     * @return a string that has every successful and failed mark. Represented by 'M' and 'D'.
+     */
+    public String sortingSteps() {
+        StringBuilder marks = new StringBuilder();
+        int i = 0;
+
+        while (size() != 0) {
+            if (mark(depth, i) == i) {
+                marks.append("M");
+                i++;
+            } else {
+                delay(depth);
+                marks.append("D");
+            }
+        }
+        return marks.toString();
+    }
+
+
+}// end class
